@@ -11,7 +11,9 @@ import edu.eci.arsw.blueprints.persistence.BlueprintNotFoundException;
 import edu.eci.arsw.blueprints.persistence.BlueprintPersistenceException;
 import edu.eci.arsw.blueprints.persistence.BlueprintsPersistence;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 /**
  *
@@ -20,6 +22,8 @@ import java.util.Map;
 public class InMemoryBlueprintPersistence implements BlueprintsPersistence{
 
     private final Map<Tuple<String,String>,Blueprint> blueprints=new HashMap<>();
+
+
 
     public InMemoryBlueprintPersistence() {
         //load stub data
@@ -44,6 +48,36 @@ public class InMemoryBlueprintPersistence implements BlueprintsPersistence{
         return blueprints.get(new Tuple<>(author, bprintname));
     }
 
-    
-    
+    @Override
+    public Set<Blueprint> getBlueprints() throws BlueprintNotFoundException {
+        Set<Blueprint> ans = new HashSet<Blueprint>();
+        for (Map.Entry<Tuple<String,String>,Blueprint> entry: blueprints.entrySet()) {
+            ans.add(entry.getValue());
+        }
+        if(ans.isEmpty()){
+            throw new BlueprintNotFoundException("No Blueprints avaliable ");
+        }
+        else {
+            return ans;
+        }
+    }
+
+    @Override
+    public Set<Blueprint> getBlueprintByAuthor(String author) throws BlueprintNotFoundException {
+        Set<Blueprint> ans = new HashSet<Blueprint>();
+        for (Map.Entry<Tuple<String,String>,Blueprint> entry: blueprints.entrySet()) {
+            if(entry.getKey().getElem1().equals(author))
+            ans.add(entry.getValue());
+        }
+        if(ans.isEmpty()){
+            throw new BlueprintNotFoundException("No Blueprints author avaliable " + author);
+        }
+        else {
+            return ans;
+        }
+    }
+
 }
+
+
+
