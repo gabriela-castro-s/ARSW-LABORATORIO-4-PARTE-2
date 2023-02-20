@@ -41,6 +41,8 @@ public class InMemoryBlueprintPersistence implements BlueprintsPersistence{
         }
     }
 
+
+
     public InMemoryBlueprintPersistence() {
         //load stub data
         Point[] pts=new Point[]{new Point(140, 140),new Point(115, 115)};
@@ -64,6 +66,36 @@ public class InMemoryBlueprintPersistence implements BlueprintsPersistence{
         return blueprints.get(new Tuple<>(author, bprintname));
     }
 
-    
-    
+    @Override
+    public Set<Blueprint> getBlueprints() throws BlueprintNotFoundException {
+        Set<Blueprint> ans = new HashSet<Blueprint>();
+        for (Map.Entry<Tuple<String,String>,Blueprint> entry: blueprints.entrySet()) {
+            ans.add(entry.getValue());
+        }
+        if(ans.isEmpty()){
+            throw new BlueprintNotFoundException("No Blueprints avaliable ");
+        }
+        else {
+            return ans;
+        }
+    }
+
+    @Override
+    public Set<Blueprint> getBlueprintByAuthor(String author) throws BlueprintNotFoundException {
+        Set<Blueprint> ans = new HashSet<Blueprint>();
+        for (Map.Entry<Tuple<String,String>,Blueprint> entry: blueprints.entrySet()) {
+            if(entry.getKey().getElem1().equals(author))
+            ans.add(entry.getValue());
+        }
+        if(ans.isEmpty()){
+            throw new BlueprintNotFoundException("No Blueprints author avaliable " + author);
+        }
+        else {
+            return ans;
+        }
+    }
+
 }
+
+
+

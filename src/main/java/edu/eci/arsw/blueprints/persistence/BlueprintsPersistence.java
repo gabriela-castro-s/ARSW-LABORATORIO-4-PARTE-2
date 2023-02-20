@@ -32,6 +32,6 @@ public interface BlueprintsPersistence {
      */
     public Blueprint getBlueprint(String author,String bprintname) throws BlueprintNotFoundException;
 
-    public Set<Blueprint> getBlueprints() throws BlueprintNotFoundException ;
-    
+
+
 }
