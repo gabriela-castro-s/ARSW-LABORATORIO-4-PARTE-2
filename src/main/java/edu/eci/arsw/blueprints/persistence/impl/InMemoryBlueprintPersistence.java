@@ -22,7 +22,7 @@ import java.util.Set;
  * @author hcadavid
  */
 
-@Service
+@Service("InMemoryBlueprintPersistence")
 public class InMemoryBlueprintPersistence implements BlueprintsPersistence{
 
 
@@ -41,9 +41,7 @@ public class InMemoryBlueprintPersistence implements BlueprintsPersistence{
         }
     }
 
-
-
-    public InMemoryBlueprintPersistence() {
+        public InMemoryBlueprintPersistence() {
         //load stub data
         Point[] pts=new Point[]{new Point(140, 140),new Point(115, 115)};
         Blueprint bp=new Blueprint("_authorname_", "_bpname_ ",pts);
@@ -67,17 +65,20 @@ public class InMemoryBlueprintPersistence implements BlueprintsPersistence{
     }
 
     public Set<Blueprint> getBlueprintByAuthor(String author) throws BlueprintNotFoundException {
-        Set<Blueprint> ans = new HashSet<Blueprint>();
-        for (Map.Entry<Tuple<String,String>,Blueprint> entry: blueprints.entrySet()) {
-            if(entry.getKey().getElem1().equals(author))
-                ans.add(entry.getValue());
+        Set<Blueprint> ans = new HashSet<>();
+
+        Blueprint bprintprov;
+        for(Map.Entry<Tuple<String,String>,Blueprint>  entry :  blueprints.entrySet()){
+            bprintprov=entry.getValue();
+            if(bprintprov.getAuthor()==author){
+                ans.add(bprintprov);
+            }
         }
-        if(ans.isEmpty()){
-            throw new BlueprintNotFoundException("No Blueprints author avaliable " + author);
+        if (ans.isEmpty()){
+            throw new BlueprintNotFoundException("The author does not exist: "+author);
         }
-        else {
-            return ans;
-        }
+
+        return ans;
     }
 
 }
