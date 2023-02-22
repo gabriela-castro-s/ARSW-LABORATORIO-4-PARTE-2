@@ -40,6 +40,29 @@ public class InMemoryPersistenceTest {
         assertEquals("Loading a previously stored blueprint returned a different blueprint.",ibpp.getBlueprint(bp.getAuthor(), bp.getName()), bp);
         
     }
+    @Test
+    public void shouldFindListOfBlueprintsByAuthor() throws BlueprintPersistenceException, BlueprintNotFoundException {
+        InMemoryBlueprintPersistence ibpp=new InMemoryBlueprintPersistence();
+
+        Point[] pts0=new Point[]{new Point(40, 40),new Point(15, 15)};
+        Blueprint bp0=new Blueprint("Carol", "mypaint1",pts0);
+
+        ibpp.saveBlueprint(bp0);
+
+
+        Point[] pts1=new Point[]{new Point(41, 41),new Point(16, 16)};
+        Blueprint bp1=new Blueprint("Carol", "mypaint2",pts1);
+
+        ibpp.saveBlueprint(bp1);
+
+
+        Point[] pts2=new Point[]{new Point(42, 42),new Point(17, 17)};
+        Blueprint bp2=new Blueprint("Carol", "mypaint3",pts2);
+
+        ibpp.saveBlueprint(bp2);
+
+        assertEquals(3,ibpp.getBlueprintByAuthor("Carol").size());
+    }
 
 
     @Test
